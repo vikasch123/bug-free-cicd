@@ -20,14 +20,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build, tag, and push image to DockerHub
+      - name: Build and Push Docker Image
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          IMAGE_NAME: flask-todo
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         run: |
-          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
-          docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-      
+          docker buildx create --use
+          docker buildx build --platform linux/amd64 -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest --push .
 
   test:
     runs-on: ubuntu-latest
