@@ -23,10 +23,10 @@ jobs:
       - name: Build and Push Docker Image
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+          IMAGE_NAME: flask-todo
         run: |
-          docker buildx create --use
-          docker buildx build --platform linux/amd64 -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest --push .
+          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
+          docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
   test:
     runs-on: ubuntu-latest
